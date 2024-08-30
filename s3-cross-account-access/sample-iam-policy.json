@@ -1,0 +1,41 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": "s3:ListAllMyBuckets",
+			"Resource": "arn:aws:s3:::*"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:ListBucket"
+			],
+			"Resource": "arn:aws:s3:::cross-account-bucket-test-2024abcdef"
+		},
+		{
+			"Effect": "Allow",
+			"Action": [
+				"s3:PutObject",
+				"s3:GetObject",
+				"s3:DeleteObject"
+			],
+			"Resource": "arn:aws:s3:::cross-account-bucket-test-2024abcdef/*"
+		},
+		{
+			"Sid": "AllowUseOfKey",
+			"Effect": "Allow",
+			"Action": [
+				"kms:Decrypt",
+				"kms:Encrypt",
+				"kms:GenerateDataKey",
+				"kms:ReEncryptTo",
+				"kms:DescribeKey",
+				"kms:ReEncryptFrom"
+			],
+			"Resource": [
+				"arn:aws:kms:eu-central-1:AAAAAAAAAAAA:key/87dcc568-aac1-4c9d-8263-ab4f8e101296"
+			]
+		}
+	]
+}
