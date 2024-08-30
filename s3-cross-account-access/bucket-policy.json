@@ -1,0 +1,32 @@
+{
+    "Version": "2012-10-17",
+    "Id": "PolicyForExternalAccount",
+    "Statement": [
+        {
+            "Sid": "AllowExternalAccountToUploadObjects",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::BBBBBBBBBBBB:root"
+            },
+            "Action": "s3:PutObject",
+            "Resource": "arn:aws:s3:::cross-account-bucket-test-2024abcdef/*",
+            "Condition": {
+                "StringEquals": {
+                    "s3:x-amz-server-side-encryption": "aws:kms"
+                },
+                "StringEqualsIfExists": {
+                    "s3:x-amz-server-side-encryption-aws-kms-key-id": "arn:aws:kms:eu-central-1:AAAAAAAAAAAA:key/87dcc568-aac1-4c9d-8263-ab4f8e101296"
+                }
+            }
+        },
+        {
+            "Sid": "AllowExternalAccountToListBucket",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::BBBBBBBBBBBB:root"
+            },
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::cross-account-bucket-test-2024abcdef"
+        }
+    ]
+}
