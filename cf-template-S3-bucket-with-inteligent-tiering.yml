@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 Bucket with Intelligent-Tiering (hot tiers only) and Server-Side Encryption
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Name of the S3 bucket to create
+
+  BucketRegion:
+    Type: String
+    Description: AWS region where the bucket will be created
+    AllowedValues:
+      - us-east-1
+      - us-east-2
+      - us-west-1
+      - us-west-2
+      - af-south-1
+      - ap-east-1
+      - ap-south-1
+      - ap-south-2
+      - ap-southeast-1
+      - ap-southeast-2
+      - ap-southeast-3
+      - ap-northeast-1
+      - ap-northeast-2
+      - ap-northeast-3
+      - ca-central-1
+      - eu-central-1
+      - eu-central-2
+      - eu-west-1
+      - eu-west-2
+      - eu-west-3
+      - eu-south-1
+      - eu-south-2
+      - eu-north-1
+      - me-south-1
+      - me-central-1
+      - sa-east-1
+
+Resources:
+  IntelligentTieringBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+
+      # Default encryption (SSE-S3)
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+      Tags:
+        - Key: StorageClass
+          Value: S3-Intelligent-Tiering
+
+      # IMPORTANT:
+      # Intelligent-Tiering is applied automatically when objects are uploaded
+      # using the INTELLIGENT_TIERING storage class. No lifecycle rules are required
+      # for the 3 instant-access tiers.
+
+Outputs:
+  BucketName:
+    Description: Name of the S3 Intelligent-Tiering bucket
+    Value: !Ref IntelligentTieringBucket
+
+  BucketRegionNote:
+    Description: Deploy this stack in the same region specified in BucketRegion
+    Value: !Ref BucketRegion
